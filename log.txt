@@ -1,0 +1,160 @@
+WPCF7_ContactForm Object
+(
+    [id:WPCF7_ContactForm:private] => 5
+    [name:WPCF7_ContactForm:private] => contact-form-1_copy
+    [title:WPCF7_ContactForm:private] => Contact form 2
+    [properties:WPCF7_ContactForm:private] => Array
+        (
+            [form] => <label> Your Email (required)
+    [email* your-email] </label>
+
+[submit "Send"]
+            [mail] => Array
+                (
+                    [subject] => Rolakosta Development İşleri "[your-subject]"
+                    [sender] => [your-name] <wordpress@ademirag.rolakosta.com>
+                    [body] => From: [your-name] <[your-email]>
+Subject: [your-subject]
+
+Message Body:
+[your-message]
+
+--
+This e-mail was sent from a contact form on Rolakosta Development İşleri (http://ademirag.rolakosta.com)
+                    [recipient] => asimdemirag@gmail.com
+                    [additional_headers] => Reply-To: [your-email]
+                    [attachments] => 
+                    [use_html] => 
+                    [exclude_blank] => 
+                )
+
+            [mail_2] => Array
+                (
+                    [active] => 
+                    [subject] => Rolakosta Development İşleri "[your-subject]"
+                    [sender] => Rolakosta Development İşleri <wordpress@ademirag.rolakosta.com>
+                    [body] => Message Body:
+[your-message]
+
+--
+This e-mail was sent from a contact form on Rolakosta Development İşleri (http://ademirag.rolakosta.com)
+                    [recipient] => [your-email]
+                    [additional_headers] => Reply-To: asimdemirag@gmail.com
+                    [attachments] => 
+                    [use_html] => 
+                    [exclude_blank] => 
+                )
+
+            [messages] => Array
+                (
+                    [mail_sent_ok] => Thank you for your message. It has been sent.
+                    [mail_sent_ng] => There was an error trying to send your message. Please try again later.
+                    [validation_error] => One or more fields have an error. Please check and try again.
+                    [spam] => There was an error trying to send your message. Please try again later.
+                    [accept_terms] => You must accept the terms and conditions before sending your message.
+                    [invalid_required] => The field is required.
+                    [invalid_too_long] => The field is too long.
+                    [invalid_too_short] => The field is too short.
+                    [invalid_date] => The date format is incorrect.
+                    [date_too_early] => The date is before the earliest one allowed.
+                    [date_too_late] => The date is after the latest one allowed.
+                    [upload_failed] => There was an unknown error uploading the file.
+                    [upload_file_type_invalid] => You are not allowed to upload files of this type.
+                    [upload_file_too_large] => The file is too big.
+                    [upload_failed_php_error] => There was an error uploading the file.
+                    [invalid_number] => The number format is invalid.
+                    [number_too_small] => The number is smaller than the minimum allowed.
+                    [number_too_large] => The number is larger than the maximum allowed.
+                    [quiz_answer_not_correct] => The answer to the quiz is incorrect.
+                    [captcha_not_match] => Your entered code is incorrect.
+                    [invalid_email] => The e-mail address entered is invalid.
+                    [invalid_url] => The URL is invalid.
+                    [invalid_tel] => The telephone number is invalid.
+                )
+
+            [additional_settings] => 
+        )
+
+    [unit_tag:WPCF7_ContactForm:private] => 
+    [responses_count:WPCF7_ContactForm:private] => 0
+    [scanned_form_tags:WPCF7_ContactForm:private] => Array
+        (
+            [0] => Array
+                (
+                    [type] => email*
+                    [basetype] => email
+                    [name] => your-email
+                    [options] => Array
+                        (
+                        )
+
+                    [raw_values] => Array
+                        (
+                        )
+
+                    [values] => Array
+                        (
+                        )
+
+                    [pipes] => WPCF7_Pipes Object
+                        (
+                            [pipes:WPCF7_Pipes:private] => Array
+                                (
+                                )
+
+                        )
+
+                    [labels] => Array
+                        (
+                        )
+
+                    [attr] => 
+                    [content] => 
+                )
+
+            [1] => Array
+                (
+                    [type] => submit
+                    [basetype] => submit
+                    [name] => 
+                    [options] => Array
+                        (
+                        )
+
+                    [raw_values] => Array
+                        (
+                            [0] => Send
+                        )
+
+                    [values] => Array
+                        (
+                            [0] => Send
+                        )
+
+                    [pipes] => WPCF7_Pipes Object
+                        (
+                            [pipes:WPCF7_Pipes:private] => Array
+                                (
+                                    [0] => WPCF7_Pipe Object
+                                        (
+                                            [before] => Send
+                                            [after] => Send
+                                        )
+
+                                )
+
+                        )
+
+                    [labels] => Array
+                        (
+                            [0] => Send
+                        )
+
+                    [attr] => 
+                    [content] => 
+                )
+
+        )
+
+    [locale] => en_US
+)
