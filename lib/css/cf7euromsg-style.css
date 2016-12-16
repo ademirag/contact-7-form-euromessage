@@ -1,0 +1,8 @@
+.form .field label{
+  display:block;
+}
+
+.item h1{
+  font-size:16px;
+  font-weight: bold;
+}

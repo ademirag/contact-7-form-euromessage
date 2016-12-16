@@ -10,8 +10,11 @@ Description: Send data to a Euro Message list entered via Contact Form 7. Tested
 Author: Rolakosta & Asım Demirağ
 Version: 1.0
 Author URI: http://rolakosta.com
+Text Domain: cf7euromsg
 */
 define('CF7EURMSGURL',plugin_dir_url(__FILE__));
+
+define('PLUGIN_BASENAME',plugin_basename(__FILE__));
 
 require( 'lib/cf7euromsg.class.php' );
 $CF7EuroMsg = new CF7EuroMsg();
