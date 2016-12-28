@@ -18,3 +18,6 @@ define('PLUGIN_BASENAME',plugin_basename(__FILE__));
 
 require( 'lib/cf7euromsg.class.php' );
 $CF7EuroMsg = new CF7EuroMsg();
+
+
+// enka_live_wsuer 7M4EOum3

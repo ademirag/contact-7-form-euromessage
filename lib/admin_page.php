@@ -1,30 +1,48 @@
+<script type="text/javascript">
+
+  var cf7euromsgSettings = JSON.parse('<?php echo json_encode($vars["settings"])?>');
+
+</script>
+
 <div class="wrapper">
 
-<h1><?php _e("Contact Form - Euro Message Ayarları","cf7euromsg")?><h1>
+<h1><?php _e("Contact Form to euro.message","cf7euromsg")?><h1>
+<div id="notification">
+<?php
 
-<h2>Euro Message'da Tanımlanması Gereken IP:</h2>
-<p><?php echo $vars["euromsg_ip"]?></p>
+if(isset($_GET["notice"])){?>
 
-<h2><?php _e("Euro Message Giriş Bilgileri","cf7euromsg")?></h2>
-<div class="form">
-  <div class="field">
-    <label for="cf7euromsg_username"><?php _e("Kullanıcı Adı:","cf7euromsg")?></label>
-    <input type="text" id="cf7euromsg_username" value="<?php echo $vars["username"]?>" />
-  </div>
-  <div class="field">
-    <label for="cf7euromsg_password"><?php _e("Şifre:","cf7euromsg")?></label>
-    <input type="password" id="cf7euromsg_password" />
-  </div>
-  <div class="submit">
-    <button id="cf7euromsg_saveEuroMessageInfo"><?php _e("Bilgileri Kaydet","cf7euromsg")?></button>
-    <button id="cf7euromsg_testEuroMessageInfo"><?php _e("Bilgileri Test Et","cf7euromsg")?></button>
-  </div>
+  <div class="updated notice"><p><?php echo $_GET["notice"]?></p></div>
+
+<?php
+
+}
+?>
+
+</div>
+<h2><?php _e("euro.message Web Servis","cf7euromsg")?></h2>
+<p><?php _e("Lütfen euro.message web servisi kullanıcı adınızı ve şifrenizi kaydediniz. euro.message, web servislerine IP bazlı erişim izni vermektedir. Gerekli izinlerin sağlanması için aşağıdaki formda yazan IP adresinizi de euro.message teknik ekibine iletmeniz gerekmektedir.","cf7euromsg");?></p>
+
+<table class="optiontable form-table">
+  <tbody>
+      <tr valign="top">
+        <th scope="row"><label for="cf7euromsg_username"><?php _e("Kullanıcı Adı","cf7euromsg")?></label></th>
+        <td><input type="text" id="cf7euromsg_username" value="<?php echo $vars["username"]?>" class="regular-text"></td>
+      </tr>
+      <tr valign="top">
+        <th scope="row"><label for="cf7euromsg_password"><?php _e("Şifre","cf7euromsg")?></label></th>
+        <td><input type="password" id="cf7euromsg_password" class="regular-text"></td>
+      </tr>
+      <tr valign="top">
+        <th scope="row"><?php _e("IP Adresiniz","cf7euromsg")?></th>
+        <td><input type="text" disabled="disabled" value="<?php echo $vars["euromsg_ip"]?>" class="regular-text"></td>
+      </tr>
+  </tbody>
+</table>
+<div class="submit">
+  <button class="button-primary" id="cf7euromsg_saveEuroMessageInfo"><?php _e("Bilgileri Kaydet","cf7euromsg")?></button>
 </div>
 
-<hr>
-
-<h2><?php _e("Contact Form Form İçerikleri", "cf7euromsg") ?></h2>
-<h3><?php _e("Demografik bilgi ekleme kısımlarına, ilgili bilginin anahtarını girmelisiniz. Euro Message, anahtar listesini sunmadığı için, Euro Message yönetim sayfasından Ayarlar > Demografik Bilgiler kısmından ilgili veriyi sizin almanız gerekmektedir.", "cf7euromsg") ?></h3>
 <?php $args = array(
 	'posts_per_page'   => -1,
 	'offset'           => 0,
@@ -45,98 +63,221 @@
 	'suppress_filters' => true
 );
 $forms = get_posts( $args );
-
-
-foreach($forms as $form):
-
-$formData = array();
-
-for($i = 0; $i < count($vars["settings"]); $i++){
-
-  if ($vars["settings"][$i]["id"] == $form->ID) {
-    $formData = $vars["settings"][$i];
-    break;
-  }
-
-}
 ?>
-<div class="item">
-<h1><?php echo $form->post_title?></h1>
-<table data-id="<?php echo $form->ID?>" class="cfForm">
-  <thead>
-    <th><?php _e("Alan Başlığı","cf7euromsg")?></th>
-    <th><?php _e("Alan Türü","cf7euromsg")?></th>
-    <th><?php _e("Listeye Ekle","cf7euromsg")?></th>
-    <th><?php _e("Demografik Bilgi Ekle","cf7euromsg")?></th>
-  </thead>
-  <tbody>
-<?php
-preg_match_all('/\[([^\]]+)\]/',$form->post_content,$fields);
-if(isset($fields[1])){
-  foreach($fields[1] as $field){
 
-    $fieldInfo = CF7EuroMsg::getFieldInfo($field);
-    if($fieldInfo == NULL) continue;
-    $fieldInfo["title"] = str_replace("\"","'",$fieldInfo["title"]);
-    echo "<tr>";
-
-    echo "<td>".$fieldInfo["title"]."</td>";
-
-    echo "<td>".$fieldInfo["type"]."</td>";
-
-    if($fieldInfo["type"] == "email"){
-      $emailValue = "0";
-      if($formData["listDataElement"] == $fieldInfo["name"]){
-        $emailValue = $formData["list"];
-      }
-      ?><td>
-        <select class="addToList" data-id="<?php echo $fieldInfo["name"]?>">
-          <option value="0" <?php if($emailValue == "0") echo "selected=\"selected\""?>><?php _e("(Listeye ekleme)","cf7euromsg");?></option>
-          <?php foreach($vars["lists"] as $listItem): ?>
-            <option <?php if($emailValue == $listItem->ListId) echo "selected=\"selected\""?> value="<?php echo $listItem->ListId?>"><?php echo $listItem->GroupName?> &gt; <?php echo $listItem->ListName?></option>
-          <?php endforeach; ?>
+<h2><?php _e("Kayıtlı Formlar","cf7euromsg")?></h2>
+<p><?php _e("Aşağıda sitenizde kayıtlı bulunan tüm Contact Form 7 formlarını görebilirsiniz. Bu formlardan bilgilerini euro.message ile paylaşmak istediklerinizi Aktive Et'e tıklayarak düzenleyebilirsiniz.","cf7euromsg");?></p>
+<ul class="subsubsub">
+	<li><a href="#" class="current all-button"><?php _e("All")?> <span class="count total"></span></a> |</li>
+	<li><a href="#" class="active-button"><?php _e("Aktif","cf7euromsg")?> <span class="count active"></span></a></li>
+  <li><a href="#" class="deactive-button"><?php _e("Deaktif","cf7euromsg")?> <span class="count deactive"></span></a></li>
+</ul>
+<div class="alignleft actions bulkactions">
+			<label for="bulk-action-selector-top" class="screen-reader-text"><?php echo _e("Select bulk action")?></label>
+      <select name="action" id="bulkActionSelector">
+          <option value="-1"><?php _e("Bulk Actions")?></option>
+	        <option value="activate"><?php _e("Activate")?></option>
+	        <option value="deactivate"><?php _e("Deactivate")?></option>
         </select>
-      </td><?php
-    }else{
-      echo "<td></td>";
-    }
+  <input type="button" id="bulkActionButton" class="button action" value="<?php _e("Apply")?>">
+</div>
+<table class="wp-list-table widefat fixed striped pages cf7euromsg">
+	<thead>
+	<tr>
+		<td  class="manage-column column-cb check-column">
+      <label class="screen-reader-text" for="cb-select-all-1"><?php _e("Select All")?></label>
+      <input  type="checkbox">
+    </td>
+    <th scope="col" class="manage-column column-title column-primary sortable desc">
+      <a href="#">
+        <span><?php _e("Kayıtlı formlar","cf7euromsg");?></span>
+        <span class="sorting-indicator"></span>
+      </a>
+    </th>
+    <th scope="col" class="manage-column column-author"><?php _e("Active")?></th>
+    <th scope="col" class="manage-column column-author"><?php _e("Author")?></th>
+    <th scope="col" class="manage-column column-date sortable asc">
+      <a href="#"><span><?php _e("Date")?></span><span class="sorting-indicator"></span></a>
+    </th>
+  </tr>
+	</thead>
 
-    if($fieldInfo["type"] != "email" && $fieldInfo["type"] != "checkbox"){
-      $value = "";
-      if(isset($formData["demography"])){
-        for($i = 0; $i < count($formData["demography"]); $i++){
-          if($formData["demography"][$i]["value"] == $fieldInfo["name"]){
-            $value = $formData["demography"][$i]["key"];
-          }
-        }
+	<tbody id="the-list">
+    <?php
+
+    $activeCount = 0;
+    $deactiveCount = 0;
+    $totalCount = 0;
+
+    foreach($forms as $form):
+      setup_postdata($form);
+
+//var_dump($form);
+    $formData = array();
+
+    for($i = 0; $i < count($vars["settings"]); $i++){
+
+      if ($vars["settings"][$i]["id"] == $form->ID) {
+        $formData = $vars["settings"][$i];
+        break;
       }
-      ?><td>
-        <input type="text" class="demography" value="<?php echo $value?>" data-id="<?php echo $fieldInfo["name"]?>">
-      </td><?php
-    }else{
-      echo "<td></td>";
+
     }
 
-    echo "<td></td>";
+    $postStatus = __("Published");
+    if($form->post_status != "publish"){
+      $postStatus = __("Unpublished");
+    }
 
-    echo "</tr>";
-  }
-}
-?>
-    </tbody>
-  </table>
+    $active = isset($formData["active"]) ? ($formData["active"] == "true") : false;
 
-</div>
-<?php
+    if($active){
+      $activeCount++;
+    }else{
+      $deactiveCount++;
+    }
+    $totalCount++;
 
-endforeach;
-?>
-<div class="controls">
-  <button id="cf7euromsg_saveSettings"><?php _e("Ayarları Kaydet","cf7euromsg")?></button>
-</div>
-<hr>
-<?php
-//var_dump($forms);
-?>
+    $postDate = date("Y/m/d",strtotime($form->post_date));
 
-</div>
+    $author = get_the_author();
+
+    //var_dump($author);
+
+    ?>
+			<tr id="post-<?php echo $form->ID?>" class="<?php echo ($active ? 'active' : 'deactive')?> iedit author-self level-0 post-<?php echo $form->ID?> type-page status-publish hentry">
+			     <th scope="row" class="check-column">
+             <label class="screen-reader-text" for="cb-select-<?php echo $form->ID?>"><?php _e("Select")?></label>
+			       <input id="cb-select-<?php echo $form->ID?>" type="checkbox" name="selectedPost[]" value="<?php echo $form->ID?>">
+					</th>
+          <td class="title column-title has-row-actions column-primary page-title" data-colname="Title">
+            <strong><a class="row-title form-item form-title" href="#" data-id="<?php echo $form->ID?>" aria-label="“<?php echo $form->post_title?>” (Edit)"><?php echo $form->post_title?></a></strong>
+            <div class="form" data-id="<?php echo $form->ID?>">
+              <div class="notification"></div>
+              <p><?php _e("Bu form bilgileri euro.message veritabanına kaydedilmemektedir. Kaydetmek istiyorsanız lütfen formu aktifleştirin.","cf7euromsg")?></p>
+              <div class="onoffswitch">
+                <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="activateButton-<?php echo $form->ID?>" <?php if($active) echo 'checked'?> >
+                <label class="onoffswitch-label" for="activateButton-<?php echo $form->ID?>">
+                    <span class="onoffswitch-inner"></span>
+                    <span class="onoffswitch-switch"></span>
+                </label>
+              </div>
+              <p><?php _e("Bu formdaki bilgilerin gönderildiği zaman hangi euro.message listenize kaydedilmesini istiyorsunuz:","cf7euromsg")?></p>
+              <div class="list-container">
+                <select class="list">
+                  <?php foreach($vars["lists"] as $listItem): ?>
+    						        <option value="<?php echo $listItem->ListId?>" <?php if(isset($formData["list"]) && $listItem->ListId == $formData["list"]) echo 'selected="selected" '?>><?php echo $listItem->GroupName?> &gt; <?php echo $listItem->ListName?></option>
+                  <?php endforeach;?>
+                </select>
+    					</div>
+              <p><?php _e("Bu formdaki e-posta dışındaki alanları euro.message demografik alanları ile eşleştirebilirsiniz. Bu şekilde kullanıcıların ad, soyad, meslek gibi diğer bilgilerini de euro.message veritabanına kaydedebilirsiniz. Bunun için aşağıdaki alanların yanlarına euro.message panelinizdeki eşleşmesini istediğiniz demografik alanın ismini yazmanız gerekmektedir.","cf7euromsg")?></p>
+              <table class="demography-table">
+                <thead>
+                  <tr>
+                    <th><?php _e("Alan Başlığı")?></th>
+                    <th><?php _e("Alan Türü")?></th>
+                    <th><?php _e("euro.message Demografik Alan Adı")?></th>
+                  </tr>
+                </thead>
+                <tbody>
+                <?php
+
+                  $formHTML = WPCF7_ContactForm::get_instance($form)->get_properties()["form"];
+
+                  preg_match_all('/\[([^\]]+)\]/',$formHTML,$fields);
+
+                  if(isset($fields[1])){
+                    foreach($fields[1] as $field){
+
+                      $fieldInfo = CF7EuroMsg::getFieldInfo($field);
+
+                      if($fieldInfo == NULL) continue;
+                      $fieldInfo["title"] = str_replace("\"","'",$fieldInfo["title"]);
+                  ?>
+
+                    <tr>
+                      <td><?php echo $fieldInfo["title"]?></td>
+                      <td><?php echo $fieldInfo["type"]?></td>
+
+                      <?php
+
+                      if($fieldInfo["type"] != "email" && $fieldInfo["type"] != "checkbox"){
+                        $value = "";
+                        if(isset($formData["demography"])){
+                          for($i = 0; $i < count($formData["demography"]); $i++){
+                            if($formData["demography"][$i]["value"] == $fieldInfo["name"]){
+                              $value = $formData["demography"][$i]["key"];
+                            }
+                          }
+                        }
+                        ?><td>
+                          <input type="text" class="demography" value="<?php echo $value?>" data-id="<?php echo $fieldInfo["name"]?>">
+                        </td><?php
+                      }else{
+                        if($fieldInfo["type"] == "email"){
+                          ?><input type="hidden" id="listDataElement-<?php echo $form->ID?>" value="<?php echo $fieldInfo["name"]?>"><?php
+                        }
+                        echo "<td></td>";
+                      }
+                      ?>
+
+                    </tr>
+
+                  <?php
+
+                  }
+
+                }
+
+                  ?>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <th><?php _e("Alan Başlığı")?></th>
+                    <th><?php _e("Alan Türü")?></th>
+                    <th><?php _e("euro.message<br>Demografik Alan Adı")?></th>
+                  </tr>
+                </tfoot>
+              </table>
+              <button type="button" class="button-secondary cancel " data-id="<?php echo $form->ID?>"><?php _e("Cancel")?></button>
+              <button type="button" class="button-primary save" data-id="<?php echo $form->ID?>"><?php _e("Update")?></button>
+            </div>
+	        </td>
+          <td class="date column-active" data-colname="Active"><span data-id="<?php echo $form->ID?>" class="dashicons dashicons-yes <?php if(!$active) echo 'hidden';?>"></span><span data-id="<?php echo $form->ID?>" class="dashicons dashicons-no-alt <?php if($active) echo 'hidden';?>"></span></td>
+          <td class="date column-author" data-colname="Author"><?php echo $author?></td>
+          <td class="date column-date" data-colname="Date"><?php echo $postStatus?><br><abbr title="<?php echo $form->post_date?>"><?php echo $postDate?></abbr></td>
+      </tr>
+
+    <?php
+  endforeach;
+wp_reset_postdata();
+     ?>
+
+		</tbody>
+
+	<tfoot>
+    <tr>
+  		<td id="cb" class="manage-column column-cb check-column">
+        <label class="screen-reader-text" for="cb-select-all-1"><?php _e("Select All")?></label>
+        <input id="cb-select-all-1" type="checkbox">
+      </td>
+      <th scope="col" class="manage-column column-title column-primary sortable desc">
+        <a href="#">
+          <span><?php _e("Kayıtlı formlar","cf7euromsg");?></span>
+          <span class="sorting-indicator"></span>
+        </a>
+      </th>
+      <th scope="col" class="manage-column column-author"><?php _e("Active")?></th>
+      <th scope="col" class="manage-column column-author"><?php _e("Author")?></th>
+      <th scope="col" class="manage-column column-date sortable asc">
+        <a href="#"><span><?php _e("Date")?></span><span class="sorting-indicator"></span></a>
+      </th>
+    </tr>
+
+	</tfoot>
+</table>
+<script type="text/javascript">
+  jQuery(document).ready(function(){
+    cf7euromsg_setCounts(<?php echo $activeCount?>,<?php echo $deactiveCount?>,<?php echo $totalCount?>);
+  });
+</script>
