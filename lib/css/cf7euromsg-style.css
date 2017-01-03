@@ -81,7 +81,7 @@ table.cf7euromsg .demography-table thead tr th:last-child{
 .onoffswitch-inner:before {
     content: "";
     padding-left: 10px;
-    background-color: #34A7C1; color: #FFFFFF;
+    background-color: #46b450; color: #FFFFFF;
 }
 .onoffswitch-inner:after {
     content: "";
@@ -102,4 +102,16 @@ table.cf7euromsg .demography-table thead tr th:last-child{
 }
 .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
     right: 0px;
+}
+
+.dashicons-yes{
+  color:#46b450;
+}
+
+.dashicons-no-alt{
+  color:#dc3232;
+}
+
+.notification{
+  margin-bottom: 10px;
 }

@@ -43,13 +43,24 @@ if(isset($_GET["notice"])){?>
   <button class="button-primary" id="cf7euromsg_saveEuroMessageInfo"><?php _e("Bilgileri Kaydet","cf7euromsg")?></button>
 </div>
 
-<?php $args = array(
+<?php
+$orderby = "date";
+if(isset($_GET["sort"])){
+  $orderby = $_GET["sort"];
+}
+
+$order = "DESC";
+if(isset($_GET["order"])){
+  $order = $_GET["order"];
+}
+
+$args = array(
 	'posts_per_page'   => -1,
 	'offset'           => 0,
 	'category'         => '',
 	'category_name'    => '',
-	'orderby'          => 'date',
-	'order'            => 'DESC',
+	'orderby'          => $orderby,
+	'order'            => $order,
 	'include'          => '',
 	'exclude'          => '',
 	'meta_key'         => '',
@@ -83,23 +94,23 @@ $forms = get_posts( $args );
 </div>
 <table class="wp-list-table widefat fixed striped pages cf7euromsg">
 	<thead>
-	<tr>
-		<td  class="manage-column column-cb check-column">
-      <label class="screen-reader-text" for="cb-select-all-1"><?php _e("Select All")?></label>
-      <input  type="checkbox">
-    </td>
-    <th scope="col" class="manage-column column-title column-primary sortable desc">
-      <a href="#">
-        <span><?php _e("Kayıtlı formlar","cf7euromsg");?></span>
-        <span class="sorting-indicator"></span>
-      </a>
-    </th>
-    <th scope="col" class="manage-column column-author"><?php _e("Active")?></th>
-    <th scope="col" class="manage-column column-author"><?php _e("Author")?></th>
-    <th scope="col" class="manage-column column-date sortable asc">
-      <a href="#"><span><?php _e("Date")?></span><span class="sorting-indicator"></span></a>
-    </th>
-  </tr>
+    <tr>
+      <td id="cb" class="manage-column column-cb check-column">
+        <label class="screen-reader-text" for="cb-select-all-1"><?php _e("Select All")?></label>
+        <input id="cb-select-all-1" type="checkbox">
+      </td>
+      <th scope="col" class="manage-column column-title column-primary sortable <?php echo $orderby == "title" ? ($order == "desc" ? "asc" : "desc") : "asc"?>">
+        <a href="<?php echo get_admin_url()?>admin.php?page=cf7-euromsg&sort=title&order=<?php echo ($order == "desc" ? "asc" : "desc")?>">
+          <span><?php _e("Kayıtlı formlar","cf7euromsg");?></span>
+          <span class="sorting-indicator"></span>
+        </a>
+      </th>
+      <th scope="col" class="manage-column column-author"><?php _e("Active")?></th>
+      <th scope="col" class="manage-column column-author"><?php _e("Author")?></th>
+      <th scope="col" class="manage-column column-date sortable <?php echo $orderby == "date" ? ($order == "desc" ? "asc" : "desc") : "desc"?>">
+        <a href="<?php echo get_admin_url()?>admin.php?page=cf7-euromsg&sort=date&order=<?php echo ($order == "desc" ? "asc" : "desc")?>"><span><?php _e("Date")?></span><span class="sorting-indicator"></span></a>
+      </th>
+    </tr>
 	</thead>
 
 	<tbody id="the-list">
@@ -153,7 +164,7 @@ $forms = get_posts( $args );
           <td class="title column-title has-row-actions column-primary page-title" data-colname="Title">
             <strong><a class="row-title form-item form-title" href="#" data-id="<?php echo $form->ID?>" aria-label="“<?php echo $form->post_title?>” (Edit)"><?php echo $form->post_title?></a></strong>
             <div class="form" data-id="<?php echo $form->ID?>">
-              <div class="notification"></div>
+
               <p><?php _e("Bu form bilgileri euro.message veritabanına kaydedilmemektedir. Kaydetmek istiyorsanız lütfen formu aktifleştirin.","cf7euromsg")?></p>
               <div class="onoffswitch">
                 <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="activateButton-<?php echo $form->ID?>" <?php if($active) echo 'checked'?> >
@@ -239,6 +250,7 @@ $forms = get_posts( $args );
                   </tr>
                 </tfoot>
               </table>
+              <div class="notification"></div>
               <button type="button" class="button-secondary cancel " data-id="<?php echo $form->ID?>"><?php _e("Cancel")?></button>
               <button type="button" class="button-primary save" data-id="<?php echo $form->ID?>"><?php _e("Update")?></button>
             </div>
@@ -261,16 +273,16 @@ wp_reset_postdata();
         <label class="screen-reader-text" for="cb-select-all-1"><?php _e("Select All")?></label>
         <input id="cb-select-all-1" type="checkbox">
       </td>
-      <th scope="col" class="manage-column column-title column-primary sortable desc">
-        <a href="#">
+      <th scope="col" class="manage-column column-title column-primary sortable <?php echo $orderby == "title" ? ($order == "desc" ? "asc" : "desc") : "asc"?>">
+        <a href="<?php echo get_admin_url()?>admin.php?page=cf7-euromsg&sort=title&order=<?php echo ($order == "desc" ? "asc" : "desc")?>">
           <span><?php _e("Kayıtlı formlar","cf7euromsg");?></span>
           <span class="sorting-indicator"></span>
         </a>
       </th>
       <th scope="col" class="manage-column column-author"><?php _e("Active")?></th>
       <th scope="col" class="manage-column column-author"><?php _e("Author")?></th>
-      <th scope="col" class="manage-column column-date sortable asc">
-        <a href="#"><span><?php _e("Date")?></span><span class="sorting-indicator"></span></a>
+      <th scope="col" class="manage-column column-date sortable <?php echo $orderby == "date" ? ($order == "desc" ? "asc" : "desc") : "desc"?>">
+        <a href="<?php echo get_admin_url()?>admin.php?page=cf7-euromsg&sort=date&order=<?php echo ($order == "desc" ? "asc" : "desc")?>"><span><?php _e("Date")?></span><span class="sorting-indicator"></span></a>
       </th>
     </tr>
 
